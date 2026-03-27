@@ -1,9 +1,10 @@
 import torch
 import cutlass
 import cutlass.cute as cute
-from cutlass import Float32, Int32
+from cutlass import Float32, BFloat16, Int32
 from cutlass.cutlass_dsl import T, dsl_user_op
 from cutlass._mlir.dialects import llvm
+from cutlass.cute.runtime import from_dlpack
 
 
 @dsl_user_op
@@ -37,12 +38,16 @@ def silu_f32(x: Float32, *, loc=None, ip=None) -> Float32:
 
 
 @cute.kernel
-def swiglu_kernel(
-    x1: cute.Tensor,
-    x2: cute.Tensor,
-    out: cute.Tensor,
-    N: Int32,
-):
+def swiglu_kernel_bf16(x1: cute.Tensor, x2: cute.Tensor, out: cute.Tensor, N: Int32):
+    tid = cute.arch.thread_idx()[0] + cute.arch.block_idx()[0] * cute.arch.block_dim()[0]
+    if tid < N:
+        x = Float32(x1[tid])
+        y = Float32(x2[tid])
+        out[tid] = BFloat16(silu_f32(x) * y)
+
+
+@cute.kernel
+def swiglu_kernel_f32(x1: cute.Tensor, x2: cute.Tensor, out: cute.Tensor, N: Int32):
     tid = cute.arch.thread_idx()[0] + cute.arch.block_idx()[0] * cute.arch.block_dim()[0]
     if tid < N:
         x = Float32(x1[tid])
@@ -51,20 +56,37 @@ def swiglu_kernel(
 
 
 @cute.jit
-def run_swiglu(x1: cute.Tensor, x2: cute.Tensor, out: cute.Tensor, N: Int32):
-    BLOCK = cutlass.Constexpr(256)
+def run_swiglu_bf16(x1: cute.Tensor, x2: cute.Tensor, out: cute.Tensor, N: Int32):
+    BLOCK = 256
     grid = ((N + BLOCK - 1) // BLOCK, 1, 1)
-    swiglu_kernel(x1, x2, out, N).launch(grid=grid, block=(BLOCK, 1, 1))
+    swiglu_kernel_bf16(x1, x2, out, N).launch(grid=grid, block=(BLOCK, 1, 1))
+
+
+@cute.jit
+def run_swiglu_f32(x1: cute.Tensor, x2: cute.Tensor, out: cute.Tensor, N: Int32):
+    BLOCK = 256
+    grid = ((N + BLOCK - 1) // BLOCK, 1, 1)
+    swiglu_kernel_f32(x1, x2, out, N).launch(grid=grid, block=(BLOCK, 1, 1))
+
+
+_compiled_cache = {}
 
 
 def swiglu_cutedsl(x1_torch: torch.Tensor, x2_torch: torch.Tensor) -> torch.Tensor:
     N = x1_torch.numel()
     out_torch = torch.empty_like(x1_torch)
 
-    layout = cute.make_layout((N,), stride=(1,))
-    x1 = cute.make_tensor(cute.from_dlpack(x1_torch.view(-1)), layout)
-    x2 = cute.make_tensor(cute.from_dlpack(x2_torch.view(-1)), layout)
-    out = cute.make_tensor(cute.from_dlpack(out_torch.view(-1)), layout)
+    x1 = from_dlpack(x1_torch.view(-1))
+    x2 = from_dlpack(x2_torch.view(-1))
+    out = from_dlpack(out_torch.view(-1))
 
-    run_swiglu(x1, x2, out, Int32(N))
+    cache_key = (N, x1_torch.dtype)
+    if cache_key not in _compiled_cache:
+        if x1_torch.dtype == torch.bfloat16:
+            fn = cute.compile(run_swiglu_bf16, x1, x2, out, Int32(N))
+        else:
+            fn = cute.compile(run_swiglu_f32, x1, x2, out, Int32(N))
+        _compiled_cache[cache_key] = fn
+
+    _compiled_cache[cache_key](x1, x2, out, Int32(N))
     return out_torch
