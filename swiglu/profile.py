@@ -1,9 +1,10 @@
 import torch
 import torch.nn.functional as F
-from swiglu_pytorch import swiglu
+from swiglu_pytorch import swiglu_pytorch
+from swiglu_pytorch_compile import swiglu_pytorch_compile
 
 WARMUP = 10
-REPEAT = 10
+REPEAT = 100
 
 def time_kernel(fn, *args):
     for _ in range(WARMUP):
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     ]
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"results_naive_{timestamp}.csv"
+    filename = f"results_{timestamp}.csv"
 
     with open(filename, "w", newline="") as f:
         writer = csv.writer(f)
