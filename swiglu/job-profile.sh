@@ -11,5 +11,5 @@ mkdir -p logs
 
 module load apptainer
 
-apptainer exec --nv ~/helion.sif python3 profile.py
+apptainer exec --nv ~/helion.sif python8 benchmark.py
 
