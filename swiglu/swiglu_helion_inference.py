@@ -2,7 +2,7 @@ import os
 import torch
 import helion
 from helion import Config
-from helion_common import config_key, swiglu_kernel_fn
+from common import config_key, swiglu_kernel_fn
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "autotune_cache")
 
