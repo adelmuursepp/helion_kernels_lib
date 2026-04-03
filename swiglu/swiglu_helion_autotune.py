@@ -27,6 +27,10 @@ if __name__ == "__main__":
         key = config_key(tokens, d_model,  hidden_dim, dtype)
         cache_path = os.path.join(CACHE_DIR, f"{key}.json")
 
+        if os.path.exists(cache_path):
+            print(f"Skipping {key} (cache exists)")
+            continue
+
         print(f"Autotuning {key} ...")
 
         x = torch.randn(tokens, d_model, device="cuda", dtype=dtype)
