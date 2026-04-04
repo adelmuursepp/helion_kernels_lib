@@ -43,7 +43,7 @@ if __name__ == "__main__":
 
         triton_path = os.path.join(CACHE_DIR, f"{key}_triton.py")
         try:
-            triton_code = helion.kernel(config=best_config)(swiglu_kernel_fn).bind(x, w1, w2).to_triton_code()
+            triton_code = helion.kernel(config=best_config)(swiglu_kernel_fn).bind((x, w1, w2)).to_triton_code()
             with open(triton_path, "w") as f:
                 f.write(triton_code)
             print(f"  Saved Triton -> {triton_path}")
