@@ -45,13 +45,13 @@ def validate(fn, tokens, d_model, hidden_dim, dtype):
     out_f      = out.float()
     expected_f = expected.float()
     diff       = (out_f - expected_f).abs()
-    max_err    = diff.max().item()
+    max_abs    = diff.max().item()
     max_rel    = (diff / (expected_f.abs().clamp(min=1.0))).max().item()
     mean_rel   = (diff / (expected_f.abs().clamp(min=1.0))).mean().item()
     # clamp denominator at 1.0 so near-zero reference values don't blow up
     # relative error. rtol=0.1 accommodates FP accumulation order differences
     # between kernels (cutedsl max_rel ~6.9%, helion mean_rel ~0.27%).
-    return max_err, max_rel, mean_rel
+    return max_abs, max_rel, mean_rel
 
 
 def benchmark(fn, tokens, d_model, hidden_dim, dtype):
@@ -95,18 +95,18 @@ if __name__ == "__main__":
 
     with open(filename, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["kernel", "tokens", "d_model", "hidden_dim", "dtype", "ms", "gb_per_s", "max_rel", "mean_rel"])
+        writer.writerow(["kernel", "tokens", "d_model", "hidden_dim", "dtype", "ms", "gb_per_s", "max_abs", "max_rel", "mean_rel"])
 
-        print(f"{'kernel':>25} {'tokens':>8} {'d_model':>8} {'hidden':>8} {'dtype':>10} {'ms':>10} {'GB/s':>10} {'max_rel':>9} {'mean_rel':>10}")
-        print("-" * 105)
+        print(f"{'kernel':>25} {'tokens':>8} {'d_model':>8} {'hidden':>8} {'dtype':>10} {'ms':>10} {'GB/s':>10} {'max_abs':>10} {'max_rel':>9} {'mean_rel':>10}")
+        print("-" * 115)
 
         for kernel_name, fn in kernels:
             for tokens, d_model, hidden_dim, dtype in MATMUL_CONFIGS:
-                max_err, max_rel, mean_rel = validate(fn, tokens, d_model, hidden_dim, dtype)
+                max_abs, max_rel, mean_rel = validate(fn, tokens, d_model, hidden_dim, dtype)
                 ms, gb_per_s = benchmark(fn, tokens, d_model, hidden_dim, dtype)
                 dtype_str = str(dtype).split(".")[-1]
-                writer.writerow([kernel_name, tokens, d_model, hidden_dim, dtype_str, f"{ms:.4f}", f"{gb_per_s:.1f}", f"{max_rel:.4f}", f"{mean_rel:.6f}"])
-                print(f"{kernel_name:>25} {tokens:>8} {d_model:>8} {hidden_dim:>8} {dtype_str:>10} {ms:>10.4f} {gb_per_s:>10.1f} {max_rel:>9.4f} {mean_rel:>10.6f}")
+                writer.writerow([kernel_name, tokens, d_model, hidden_dim, dtype_str, f"{ms:.4f}", f"{gb_per_s:.1f}", f"{max_abs:.6f}", f"{max_rel:.4f}", f"{mean_rel:.6f}"])
+                print(f"{kernel_name:>25} {tokens:>8} {d_model:>8} {hidden_dim:>8} {dtype_str:>10} {ms:>10.4f} {gb_per_s:>10.1f} {max_abs:>10.6f} {max_rel:>9.4f} {mean_rel:>10.6f}")
 
     print(f"\nResults saved to {filename}")
 

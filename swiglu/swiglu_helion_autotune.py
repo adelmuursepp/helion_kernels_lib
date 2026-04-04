@@ -39,6 +39,14 @@ if __name__ == "__main__":
 
         best_config = swiglu_helion_autotune.autotune((x, w1, w2))
         best_config.save(cache_path)
+        print(f"  Saved config -> {cache_path}")
 
-        print(f"  Saved -> {cache_path}")
+        triton_path = os.path.join(CACHE_DIR, f"{key}_triton.py")
+        try:
+            triton_code = helion.kernel(config=best_config)(swiglu_kernel_fn).bind(x, w1, w2).to_triton_code()
+            with open(triton_path, "w") as f:
+                f.write(triton_code)
+            print(f"  Saved Triton -> {triton_path}")
+        except Exception as e:
+            print(f"  Could not save Triton code: {e}")
 
