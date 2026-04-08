@@ -84,9 +84,13 @@ if __name__ == "__main__":
 
         for kernel_name, fn in kernels:
             for tokens, d_model, hidden_dim, dtype in MATMUL_CONFIGS:
-                max_abs, max_rel, mean_rel = validate(fn, tokens, d_model, hidden_dim, dtype)
-                ms, gb_per_s = benchmark(fn, tokens, d_model, hidden_dim, dtype)
                 dtype_str = str(dtype).split(".")[-1]
+                try:
+                    max_abs, max_rel, mean_rel = validate(fn, tokens, d_model, hidden_dim, dtype)
+                    ms, gb_per_s = benchmark(fn, tokens, d_model, hidden_dim, dtype)
+                except FileNotFoundError as e:
+                    print(f"{kernel_name:>25} {tokens:>8} {d_model:>8} {hidden_dim:>8} {dtype_str:>10} -- skipped: {e}")
+                    continue
                 writer.writerow([kernel_name, tokens, d_model, hidden_dim, dtype_str, f"{ms:.4f}", f"{gb_per_s:.1f}", f"{max_abs:.6f}", f"{max_rel:.4f}", f"{mean_rel:.6f}"])
                 print(f"{kernel_name:>25} {tokens:>8} {d_model:>8} {hidden_dim:>8} {dtype_str:>10} {ms:>10.4f} {gb_per_s:>10.1f} {max_abs:>10.6f} {max_rel:>9.4f} {mean_rel:>10.6f}")
 
