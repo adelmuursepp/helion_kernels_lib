@@ -1,13 +1,9 @@
 import os
 
-# Run each autotune candidate in a subprocess so a crashing config (e.g.
-# cudaErrorIllegalAddress or PTXAS register overflow) doesn't kill the whole
-# tuner. The best non-crashing config still gets saved.
-os.environ.setdefault("HELION_AUTOTUNE_PRECOMPILE", "spawn")
 
 import torch
 import helion
-from common import ATTENTION_CONFIGS
+from common import ATTENTION_CONFIGS, SAFE_CONFIGS
 from helion_common import config_key, VARIANTS
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "autotune_cache")
@@ -17,8 +13,11 @@ if __name__ == "__main__":
     os.makedirs(CACHE_DIR, exist_ok=True)
 
     for variant_name, kernel_fn in VARIANTS:
-        # Q, K, V do not change throughout for a kernel and gives speedup
-        autotune_kernel = helion.kernel(static_shapes=True)(kernel_fn)
+        # Pass configs= so Helion uses FiniteSearch over our safe list only,
+        # instead of random population that explores tile_m=256/512.
+        # force=False is required to actually use FiniteSearch — the default
+        # force=True overrides configs= and runs the full random search.
+        autotune_kernel = helion.kernel(static_shapes=True, configs=SAFE_CONFIGS)(kernel_fn)
 
         for batch, num_heads, seq_len, head_dim, dtype in ATTENTION_CONFIGS:
             key = config_key(batch, num_heads, seq_len, head_dim, dtype, variant_name)
@@ -34,7 +33,7 @@ if __name__ == "__main__":
             k = torch.randn(batch, num_heads, seq_len, head_dim, device="cuda", dtype=dtype)
             v = torch.randn(batch, num_heads, seq_len, head_dim, device="cuda", dtype=dtype)
 
-            best_config = autotune_kernel.autotune((q, k, v))
+            best_config = autotune_kernel.autotune((q, k, v), force=False)
             best_config.save(cache_path)
             print(f"  Saved config -> {cache_path}")
 
