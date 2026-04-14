@@ -7,20 +7,9 @@ from common import ATTENTION_CONFIGS
 from helion_common import config_key, VARIANTS
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "crash_repro")
-config_for_repro = helion.Config(
-    block_sizes=[1, 64, 16],
-    indexing=['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'],
-    l2_groupings=[16],
-    load_eviction_policies=['last', 'first', 'last'],
-    loop_orders=[[0, 1]],
-    num_stages=6,
-    num_warps=16,
-    pid_type='flat',
-    range_flattens=[None, True],
-    range_multi_buffers=[None, None],
-    range_num_stages=[0, 4],
-    range_unroll_factors=[0, 3],
-    range_warp_specializes=[])
+# from attention_autotune_10380017.err
+
+config_for_repro = helion.Config(block_sizes=[1, 64, 16], indexing=['tensor_descriptor', 'pointer', 'tensor_descriptor', 'tensor_descriptor'], l2_groupings=[1], load_eviction_policies=['last', 'last', 'first'], loop_orders=[[0, 1]], num_stages=1, num_warps=32, pid_type='flat', range_flattens=[None, True], range_multi_buffers=[None, None], range_num_stages=[0, 3], range_unroll_factors=[0, 3], range_warp_specializes=[])
 
 config_idx_to_repro = 3
 
@@ -51,10 +40,12 @@ if __name__ == "__main__":
                 print(f"  Could not save Triton code: {e}")
 
             # Tried just running using Helion and with Triton benchmarking (similar to when Helion runs it)
+            # To just run with Helion:
+            # helion.kernel(config=config_for_repro, static_shapes=True)(kernel_fn)(q, k, v)
             try:
-                bound_kernel = helion.kernel(config=config_for_repro, static_shapes=True)(kernel_fn)
-                bound_kernel(q, k, v)  # single warmup to catch obvious compile errors first
-                ms = triton.testing.do_bench(lambda: bound_kernel(q, k, v))
+                kernel = helion.kernel(config=config_for_repro, static_shapes=True)(kernel_fn)
+                kernel(q, k, v)  # single warmup to catch obvious compile errors first
+                ms = triton.testing.do_bench(lambda: kernel(q, k, v))
                 print(f"  Ran successfully (no crash), {ms:.3f} ms")
             except Exception as e:
                 print(f"  Crashed during benchmarking: {e}")

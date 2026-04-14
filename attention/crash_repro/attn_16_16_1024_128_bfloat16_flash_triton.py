@@ -14,15 +14,9 @@ _BLOCK_SIZE_3 = tl.constexpr(16)
 @triton.jit
 def _helion_attention_kernel_fn(q_view, k_view, v_view, out, _RDIM_SIZE_2: tl.constexpr):
     # src[helion_common.py:30]: for tile_b, tile_m in hl.tile([q_view.size(0), m_dim]):
-    num_pid_m = 256
-    num_pid_n = tl.cdiv(1024, _BLOCK_SIZE_1)
-    inner_2d_pid = tl.program_id(0)
-    num_pid_in_group = 16 * num_pid_n
-    group_id = inner_2d_pid // num_pid_in_group
-    first_pid_m = group_id * 16
-    group_size_m = min(num_pid_m - first_pid_m, 16)
-    pid_0 = first_pid_m + inner_2d_pid % num_pid_in_group % group_size_m
-    pid_1 = inner_2d_pid % num_pid_in_group // group_size_m
+    num_blocks_0 = 256
+    pid_0 = tl.program_id(0) % num_blocks_0
+    pid_1 = tl.program_id(0) // num_blocks_0
     offset_0 = pid_0
     indices_0 = offset_0 + tl.zeros([1], tl.int32)
     offset_1 = pid_1 * _BLOCK_SIZE_1
@@ -51,7 +45,7 @@ def _helion_attention_kernel_fn(q_view, k_view, v_view, out, _RDIM_SIZE_2: tl.co
         l_i_copy_0 = l_i_copy
         acc_copy_0 = acc_copy
         # src[helion_common.py:37]: k = k_view[tile_b, :, tile_n]
-        k = tl.load(k_view + (indices_0[:, None, None] * 131072 + indices_2[None, :, None] * 1 + indices_3[None, None, :] * 128), None, eviction_policy='evict_first')
+        k = tl.load(k_view + (indices_0[:, None, None] * 131072 + indices_2[None, :, None] * 1 + indices_3[None, None, :] * 128), None, eviction_policy='evict_last')
         # src[helion_common.py:38]: qk = torch.bmm(q, k)
         qk = tl.cast(tl.reshape(tl.dot(tl.reshape(tl.cast(q_copy_0, tl.bfloat16), [_BLOCK_SIZE_1, 128]), tl.reshape(tl.cast(k, tl.bfloat16), [128, _BLOCK_SIZE_3]), input_precision='tf32', out_dtype=tl.float32), [_BLOCK_SIZE_0, _BLOCK_SIZE_1, _BLOCK_SIZE_3]), tl.bfloat16)
         # src[helion_common.py:39]: m_ij = torch.maximum(m_i, torch.amax(qk, -1) * qk_scale)
@@ -80,7 +74,7 @@ def _helion_attention_kernel_fn(q_view, k_view, v_view, out, _RDIM_SIZE_2: tl.co
         subscript_1 = v_10[:, :, None]
         v_13 = acc_copy_0 * subscript_1
         # src[helion_common.py:46]: v = v_view[tile_b, tile_n, :]
-        v = tl.load(v_view + (indices_0[:, None, None] * 131072 + indices_3[None, :, None] * 128 + indices_2[None, None, :] * 1), None, eviction_policy='evict_last')
+        v = tl.load(v_view + (indices_0[:, None, None] * 131072 + indices_3[None, :, None] * 128 + indices_2[None, None, :] * 1), None, eviction_policy='evict_first')
         # src[helion_common.py:47]: p = p.to(v.dtype)
         v_14 = tl.cast(v_8, tl.bfloat16)
         # src[helion_common.py:48]: acc = torch.baddbmm(acc, p, v)
@@ -116,6 +110,6 @@ def attention_kernel_fn(q_in: torch.Tensor, k_in: torch.Tensor, v_in: torch.Tens
     # src[helion_common.py:31]:     m_i = hl.full([tile_b, tile_m], float("-inf"), dtype=torch.float32)
     # src[helion_common.py:32]:     l_i = torch.full_like(m_i, 1.0)
     # src[helion_common.py:30-53]: ...
-    _launcher(_helion_attention_kernel_fn, (256 * triton.cdiv(1024, _BLOCK_SIZE_1),), q_view, k_view, v_view, out, _RDIM_SIZE_2, num_warps=16, num_stages=6)
+    _launcher(_helion_attention_kernel_fn, (256 * triton.cdiv(1024, _BLOCK_SIZE_1),), q_view, k_view, v_view, out, _RDIM_SIZE_2, num_warps=32, num_stages=1)
     # src[helion_common.py:55]: return out.view(q_in.size())
     return out.view(q_in.size())
