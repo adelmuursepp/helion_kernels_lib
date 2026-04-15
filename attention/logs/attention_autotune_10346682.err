@@ -1,0 +1,306 @@
+[0s] Autotune random seed: 2305454054
+[0s] Starting LFBOTreeSearch with initial_population=FROM_RANDOM, copies=5, max_generations=20, similarity_penalty=1.0
+[1481s] Adaptive compile timeout: 117s (90% percentile=117.7s, bounds=[30.0s, 600s])
+[1482s] Initial random population of 100, 5 starting points: 
+error=21
+timeout=1
+ok=78
+min=0.3608
+mid=3.5531
+max=1597.8334
+best={'block_sizes': [1, 64, 32],
+ 'indexing': ['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'],
+ 'l2_groupings': [16],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 5,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, None],
+ 'range_num_stages': [0, 4],
+ 'range_unroll_factors': [0, 3],
+ 'range_warp_specializes': []}
+[1482s] Fitting surrogate: 100 points, 100 targets
+[1483s] Generation 1 starting: 51 neighbors, 5 active search path(s)
+[2047s] Generation 1 complete: 
+error=2
+timeout=1
+ok=54
+min=0.3606
+mid=0.6821
+max=15.8744
+best={'block_sizes': [1, 64, 32],
+ 'indexing': ['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'],
+ 'l2_groupings': [16],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 5,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, None],
+ 'range_num_stages': [0, 4],
+ 'range_unroll_factors': [0, 3],
+ 'range_warp_specializes': []}
+[2047s] Fitting surrogate: 157 points, 157 targets
+[2047s] Generation 2 starting: 52 neighbors, 5 active search path(s)
+[2666s] Generation 2 complete: 
+error=6
+timeout=5
+ok=47
+min=0.3284
+mid=0.6452
+max=17.9742
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'pointer'],
+ 'l2_groupings': [4],
+ 'load_eviction_policies': ['last', 'last', 'first'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[2666s] Fitting surrogate: 215 points, 215 targets
+[2667s] Generation 3 starting: 85 neighbors, 5 active search path(s)
+[3701s] Generation 3 complete: 
+error=12
+timeout=6
+ok=73
+min=0.3271
+mid=0.3690
+max=23.3581
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'tensor_descriptor'],
+ 'l2_groupings': [8],
+ 'load_eviction_policies': ['last', 'last', 'first'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[3701s] Fitting surrogate: 306 points, 306 targets
+[3701s] Copy 1 finish because of no improvement
+[3702s] Generation 4 starting: 71 neighbors, 4 active search path(s)
+[4381s] Generation 4 complete: 
+error=3
+ok=72
+min=0.3199
+mid=0.3412
+max=1.6439
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'pointer'],
+ 'l2_groupings': [16],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[4381s] Fitting surrogate: 381 points, 381 targets
+[4383s] Generation 5 starting: 71 neighbors, 4 active search path(s)
+[5083s] Generation 5 complete: 
+error=10
+ok=65
+min=0.3221
+mid=0.4881
+max=18.9276
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'tensor_descriptor'],
+ 'l2_groupings': [32],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[5083s] Fitting surrogate: 456 points, 456 targets
+[5084s] Copy 4 finish because of no improvement
+[5084s] Generation 6 starting: 52 neighbors, 3 active search path(s)
+[5622s] Generation 6 complete: 
+error=8
+ok=47
+min=0.3220
+mid=0.3700
+max=31.0655
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'tensor_descriptor'],
+ 'l2_groupings': [32],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[5622s] Fitting surrogate: 511 points, 511 targets
+[5622s] Copy 0 finish because of no improvement
+[5623s] Copy 3 finish because of no improvement
+[5623s] Generation 7 starting: 17 neighbors, 1 active search path(s)
+[5799s] Generation 7 complete: 
+error=3
+ok=16
+min=0.3196
+mid=1.1804
+max=11.6010
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'tensor_descriptor'],
+ 'l2_groupings': [32],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[5799s] Fitting surrogate: 530 points, 530 targets
+[5800s] Generation 8 starting: 18 neighbors, 1 active search path(s)
+[5996s] Generation 8 complete: 
+timeout=1
+ok=19
+min=0.3165
+mid=0.4110
+max=1.6585
+best={'block_sizes': [1, 64, 64],
+ 'indexing': ['pointer', 'pointer', 'pointer', 'tensor_descriptor'],
+ 'l2_groupings': [32],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 7,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, False],
+ 'range_num_stages': [0, 1],
+ 'range_unroll_factors': [0, 1],
+ 'range_warp_specializes': []}
+[5996s] Fitting surrogate: 550 points, 550 targets
+[5996s] Copy 2 finish because of no improvement
+[5996s] Autotuning stop at generation 9 because of no active search path
+[5996s] Autotuning complete in 5996.9s after searching 447 configs.
+One can hardcode the best config and skip autotuning with:
+    @helion.kernel(config=helion.Config(block_sizes=[1, 64, 64], indexing=['pointer', 'pointer', 'pointer', 'tensor_descriptor'], l2_groupings=[32], load_eviction_policies=['last', 'last', 'last'], loop_orders=[[0, 1]], num_stages=7, num_warps=4, pid_type='flat', range_flattens=[None, True], range_multi_buffers=[None, False], range_num_stages=[0, 1], range_unroll_factors=[0, 1], range_warp_specializes=[]), static_shapes=True)
+
+[5996s] Code of selected kernel: /tmp/torchinductor_muursep1/o6/co67ywbrxmzdullnkbwcuocv4dwfr6nljci4nzdwnwsouysye33d.py
+[0s] Autotune random seed: 2305454054
+[0s] Starting LFBOTreeSearch with initial_population=FROM_RANDOM, copies=5, max_generations=20, similarity_penalty=1.0
+[1242s] Adaptive compile timeout: 117s (90% percentile=117.0s, bounds=[30.0s, 117s])
+[1242s] Initial random population of 100, 5 starting points: 
+error=23
+timeout=14
+ok=63
+min=0.6358
+mid=4.7042
+max=298.1787
+best={'block_sizes': [1, 64, 32],
+ 'indexing': ['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'],
+ 'l2_groupings': [16],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 5,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, None],
+ 'range_num_stages': [0, 4],
+ 'range_unroll_factors': [0, 3],
+ 'range_warp_specializes': []}
+[1242s] Fitting surrogate: 100 points, 100 targets
+[1243s] Generation 1 starting: 57 neighbors, 5 active search path(s)
+[1952s] Generation 1 complete: 
+error=9
+timeout=3
+ok=50
+min=0.6323
+mid=2.0797
+max=45.1753
+best={'block_sizes': [1, 64, 32],
+ 'indexing': ['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'],
+ 'l2_groupings': [16],
+ 'load_eviction_policies': ['last', 'last', 'last'],
+ 'loop_orders': [[0, 1]],
+ 'num_stages': 5,
+ 'num_warps': 4,
+ 'pid_type': 'flat',
+ 'range_flattens': [None, True],
+ 'range_multi_buffers': [None, None],
+ 'range_num_stages': [0, 4],
+ 'range_unroll_factors': [0, 3],
+ 'range_warp_specializes': []}
+[1953s] Fitting surrogate: 162 points, 162 targets
+[1953s] Generation 2 starting: 50 neighbors, 5 active search path(s)
+torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/muursep1/kernel-profiling/attention/attention_helion_autotune.py", line 36, in <module>
+    best_config = autotune_kernel.autotune((q, k, v))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/runtime/kernel.py", line 339, in autotune
+    return self.bind(args).autotune(args, force=force, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/runtime/kernel.py", line 718, in autotune
+    config = self.env.backend.autotune(self, args, force=force, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/_compiler/backend.py", line 534, in autotune
+    ).autotune(skip_cache=force)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_cache.py", line 192, in autotune
+    return self.autotuner.autotune()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 1043, in autotune
+    best = self._autotune()
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/surrogate_pattern_search.py", line 409, in _autotune
+    self.parallel_benchmark_population(
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 1403, in parallel_benchmark_population
+    results = self.parallel_benchmark([m.config for m in members], desc=desc)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 974, in parallel_benchmark
+    perf = self.benchmark_function(config, fn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 719, in benchmark_function
+    raise exc.TritonUnrecoverableRuntimeError(
+helion.exc.TritonUnrecoverableRuntimeError: An unrecoverable Triton runtime error occurred: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+.
+This likely indicates a bug in Triton and cannot be recovered from.
+@helion.kernel(config=helion.Config(block_sizes=[1, 64, 16], indexing=['pointer', 'tensor_descriptor', 'tensor_descriptor', 'tensor_descriptor'], l2_groupings=[16], load_eviction_policies=['last', 'first', 'last'], loop_orders=[[0, 1]], num_stages=6, num_warps=16, pid_type='flat', range_flattens=[None, True], range_multi_buffers=[None, None], range_num_stages=[0, 4], range_unroll_factors=[0, 3], range_warp_specializes=[]), static_shapes=True)
+Original error: AcceleratorError: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Set HELION_AUTOTUNE_PRECOMPILE="spawn" to isolate these errors in a subprocess so tuning can continue.

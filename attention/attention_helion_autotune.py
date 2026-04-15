@@ -3,7 +3,7 @@ import os
 
 import torch
 import helion
-from common import ATTENTION_CONFIGS, SAFE_CONFIGS
+from common import ATTENTION_CONFIGS
 from helion_common import config_key, VARIANTS
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "autotune_cache")
@@ -17,9 +17,12 @@ if __name__ == "__main__":
         # instead of random population that explores tile_m=256/512.
         # force=False is required to actually use FiniteSearch — the default
         # force=True overrides configs= and runs the full random search.
-        autotune_kernel = helion.kernel(static_shapes=True, configs=SAFE_CONFIGS)(kernel_fn)
+        
+
+        autotune_kernel = helion.kernel(static_shapes=True)(kernel_fn)
 
         for batch, num_heads, seq_len, head_dim, dtype in ATTENTION_CONFIGS:
+
             key = config_key(batch, num_heads, seq_len, head_dim, dtype, variant_name)
             cache_path = os.path.join(CACHE_DIR, f"{key}.json")
 
@@ -33,7 +36,7 @@ if __name__ == "__main__":
             k = torch.randn(batch, num_heads, seq_len, head_dim, device="cuda", dtype=dtype)
             v = torch.randn(batch, num_heads, seq_len, head_dim, device="cuda", dtype=dtype)
 
-            best_config = autotune_kernel.autotune((q, k, v), force=False)
+            best_config = autotune_kernel.autotune((q, k, v))
             best_config.save(cache_path)
             print(f"  Saved config -> {cache_path}")
 

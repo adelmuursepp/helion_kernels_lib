@@ -1,0 +1,6 @@
+Skipping attn_32_16_512_64_bfloat16_flash (cache exists)
+Skipping attn_32_16_512_128_bfloat16_flash (cache exists)
+Skipping attn_16_16_1024_64_bfloat16_flash (cache exists)
+Autotuning attn_16_16_1024_128_bfloat16_flash ...
+Initial population precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━ 100/100 - configs/s
+Initial population exploring neighbors  73% ━━━━━━━━━━      73/100 2.7 configs/s

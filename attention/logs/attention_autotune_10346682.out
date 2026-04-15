@@ -1,0 +1,41 @@
+Skipping attn_32_16_512_64_bfloat16_flash (cache exists)
+Skipping attn_32_16_512_128_bfloat16_flash (cache exists)
+Autotuning attn_16_16_1024_64_bfloat16_flash ...
+Initial population precompiling 100% ━━━━━━━━━━━━━━━━━━━━━ 100/100 6.7 configs/s
+Initial population exploring neighbors 100% ━━━━━━━━━━━━━━ 100/100 3.1 configs/s
+Verifying initial results 100% ━━━━━━━━━━━━━━━━━━━━━━━━━ 566/566 463.5 configs/s
+Generation 1: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54/54 0.3 configs/s
+Generation 1: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 54/54 15.9 configs/s
+Generation 1: verifying top configs 100% ━━━━━━━━━━━━━━━ 566/566 107.1 configs/s
+Generation 2: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53/53 0.3 configs/s
+Generation 2: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 53/53 18.3 configs/s
+Generation 2: verifying top configs 100% ━━━━━━━━━━━━━━━ 621/621 111.0 configs/s
+Generation 3: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86/86 0.5 configs/s
+Generation 3: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 86/86 20.5 configs/s
+Generation 3: verifying top configs 100% ━━━━━━━━━━━━━━━━ 621/621 37.6 configs/s
+Generation 4: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71/71 0.7 configs/s
+Generation 4: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 71/71 18.0 configs/s
+Generation 4: verifying top configs 100% ━━━━━━━━━━━━━━━━ 632/632 36.8 configs/s
+Generation 5: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72/72 0.3 configs/s
+Generation 5: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 72/72 16.7 configs/s
+Generation 5: verifying top configs 100% ━━━━━━━━━━━━━━━━ 639/639 72.6 configs/s
+Generation 6: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54/54 0.2 configs/s
+Generation 6: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 54/54 16.4 configs/s
+Generation 6: verifying top configs 100% ━━━━━━━━━━━━━━━━ 640/640 79.0 configs/s
+Generation 7: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18/18 0.6 configs/s
+Generation 7: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 18/18 14.7 configs/s
+Generation 7: verifying top configs 100% ━━━━━━━━━━━━━━━ 640/640 473.4 configs/s
+Generation 8: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18/18 0.2 configs/s
+Generation 8: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 18/18 18.7 configs/s
+Generation 8: verifying top configs 100% ━━━━━━━━━━━━━━━ 640/640 201.1 configs/s
+  Saved config -> /home/muursep1/kernel-profiling/attention/autotune_cache/attn_16_16_1024_64_bfloat16_flash.json
+  Saved Triton -> /home/muursep1/kernel-profiling/attention/autotune_cache/attn_16_16_1024_64_bfloat16_flash_triton.py
+Autotuning attn_16_16_1024_128_bfloat16_flash ...
+Initial population precompiling 100% ━━━━━━━━━━━━━━━━━━━━━ 100/100 0.1 configs/s
+Initial population exploring neighbors 100% ━━━━━━━━━━━━━━ 100/100 4.1 configs/s
+Verifying initial results 100% ━━━━━━━━━━━━━━━━━━━━━━━━━ 323/323 628.6 configs/s
+Generation 1: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 58/58 0.2 configs/s
+Generation 1: exploring neighbors 100% ━━━━━━━━━━━━━━━━━━━━ 58/58 11.7 configs/s
+Generation 1: verifying top configs 100% ━━━━━━━━━━━━━━━ 323/323 142.7 configs/s
+Generation 2: precompiling 100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50/50 0.1 configs/s
+Generation 2: exploring neighbors   8% ━╸                    4/50 30.0 configs/s

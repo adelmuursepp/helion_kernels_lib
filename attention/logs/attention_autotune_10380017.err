@@ -1,0 +1,42 @@
+[0s] Autotune random seed: 2363542018
+[0s] Starting LFBOTreeSearch with initial_population=FROM_RANDOM, copies=5, max_generations=20, similarity_penalty=1.0
+RuntimeError: Triton Error [CUDA]: an illegal memory access was encountered
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/muursep1/kernel-profiling/attention/attention_helion_autotune.py", line 39, in <module>
+    best_config = autotune_kernel.autotune((q, k, v))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/runtime/kernel.py", line 339, in autotune
+    return self.bind(args).autotune(args, force=force, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/runtime/kernel.py", line 718, in autotune
+    config = self.env.backend.autotune(self, args, force=force, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/_compiler/backend.py", line 534, in autotune
+    ).autotune(skip_cache=force)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_cache.py", line 192, in autotune
+    return self.autotuner.autotune()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 1043, in autotune
+    best = self._autotune()
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/surrogate_pattern_search.py", line 343, in _autotune
+    self.parallel_benchmark_population(self.population, desc="Initial population")
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 1403, in parallel_benchmark_population
+    results = self.parallel_benchmark([m.config for m in members], desc=desc)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 974, in parallel_benchmark
+    perf = self.benchmark_function(config, fn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/helion/autotuner/base_search.py", line 719, in benchmark_function
+    raise exc.TritonUnrecoverableRuntimeError(
+helion.exc.TritonUnrecoverableRuntimeError: An unrecoverable Triton runtime error occurred: Triton Error [CUDA]: an illegal memory access was encountered.
+This likely indicates a bug in Triton and cannot be recovered from.
+@helion.kernel(config=helion.Config(block_sizes=[1, 64, 16], indexing=['tensor_descriptor', 'pointer', 'tensor_descriptor', 'tensor_descriptor'], l2_groupings=[1], load_eviction_policies=['last', 'last', 'first'], loop_orders=[[0, 1]], num_stages=1, num_warps=32, pid_type='flat', range_flattens=[None, True], range_multi_buffers=[None, None], range_num_stages=[0, 3], range_unroll_factors=[0, 3], range_warp_specializes=[]), static_shapes=True)
+Original error: RuntimeError: Triton Error [CUDA]: an illegal memory access was encountered
+Set HELION_AUTOTUNE_PRECOMPILE="spawn" to isolate these errors in a subprocess so tuning can continue.
+INFO:    Terminating fuse-overlayfs after timeout
+INFO:    Timeouts can be caused by a running background process
